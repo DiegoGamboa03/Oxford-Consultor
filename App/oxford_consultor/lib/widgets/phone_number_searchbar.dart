@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 
-class PhoneNumberSearchBar extends StatefulWidget {
-  const PhoneNumberSearchBar({super.key, required this.controller});
+class PhoneNumberField extends StatefulWidget {
+  const PhoneNumberField({super.key, required this.controller});
   final TextEditingController controller;
   @override
-  State<PhoneNumberSearchBar> createState() => _PhoneNumberSearchBarState();
+  State<PhoneNumberField> createState() => _PhoneNumberFieldState();
 }
 
-class _PhoneNumberSearchBarState extends State<PhoneNumberSearchBar> {
+class _PhoneNumberFieldState extends State<PhoneNumberField> {
   List<String> list = <String>['0416', '0414', '0412'];
+  late String dropdownValue;
+  TextEditingController controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    dropdownValue = list.first;
+  }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController controller = widget.controller;
-    String dropdownValue = list.first;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
@@ -39,6 +45,7 @@ class _PhoneNumberSearchBarState extends State<PhoneNumberSearchBar> {
                 onChanged: (String? value) {
                   // This is called when the user selects an item.
                   setState(() {
+                    _updateControllerText();
                     dropdownValue = value!;
                   });
                 },
@@ -55,6 +62,9 @@ class _PhoneNumberSearchBarState extends State<PhoneNumberSearchBar> {
           Expanded(
             flex: 3,
             child: TextField(
+              onChanged: (value) {
+                _updateControllerText();
+              },
               controller: controller,
               decoration: const InputDecoration(
                 border: InputBorder.none,
@@ -65,5 +75,10 @@ class _PhoneNumberSearchBarState extends State<PhoneNumberSearchBar> {
         ],
       ),
     );
+  }
+
+  void _updateControllerText() {
+    String combinedText = '$dropdownValue-${widget.controller.text}';
+    widget.controller.text = combinedText;
   }
 }

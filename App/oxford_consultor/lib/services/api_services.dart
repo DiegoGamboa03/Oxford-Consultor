@@ -1,0 +1,50 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:oxford_consultor/models/phone_number.dart';
+import '../constants.dart';
+
+class ApiService {
+  Future<PhoneNumber> occupyPhoneNumber() async {
+    var url = Uri.parse('${ApiConstants.baseUrl}/occupyPhoneNumber');
+    var response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      // Si la llamada al servidor fue exitosa, analiza el JSON
+      return PhoneNumber.fromJson(json.decode(response.body));
+    } else {
+      // Si la llamada no fue exitosa, lanza un error.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<String> updateObservation(
+      String phoneNumber, String observation) async {
+    try {
+      // Define the data to be updated
+      final Map<String, dynamic> updateData = {
+        'phone_number': phoneNumber,
+        'observation': observation,
+      };
+
+      // Convert the data to JSON
+      final jsonData = json.encode(updateData);
+
+      // Make the API call to the update endpoint using PUT method
+      final response = await http.put(
+        Uri.parse('${ApiConstants.baseUrl}/updateObservation'),
+        body: jsonData,
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      // Check the response status code
+      if (response.statusCode == 200) {
+        return '200';
+      } else {
+        // Handle error response
+      }
+    } catch (e) {
+      // Handle exception
+    }
+    return '200';
+  }
+}
