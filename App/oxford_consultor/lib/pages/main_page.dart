@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:oxford_consultor/widgets/phone_number_searchbar.dart';
+import 'package:oxford_consultor/widgets/phone_number_field.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -16,8 +16,11 @@ class _MainPageState extends State<MainPage> {
       body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Container(), //aqui va el logo
         Center(
-          child: PhoneNumberSearchBar(controller: controller),
+          child: PhoneNumberField(controller: controller),
         ),
+        (controller.text.length < 12)
+            ? const Text("True")
+            : const Text('Ingrese un numero de telefono'),
       ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
