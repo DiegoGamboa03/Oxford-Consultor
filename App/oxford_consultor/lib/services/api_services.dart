@@ -4,13 +4,15 @@ import 'package:oxford_consultor/models/phone_number.dart';
 import '../constants.dart';
 
 class ApiService {
-  Future<PhoneNumber> getPhoneNumber(PhoneNumber phoneNumber) async {
-    var url = Uri.parse('${ApiConstants.baseUrl}/${phoneNumber.phoneNumber}');
+  Future<PhoneNumber?> getPhoneNumber(String phoneNumber) async {
+    var url = Uri.parse('${ApiConstants.baseUrl}/$phoneNumber');
     var response = await http.get(url);
 
     if (response.statusCode == 200) {
       // Si la llamada al servidor fue exitosa, analiza el JSON
       return PhoneNumber.fromJson(json.decode(response.body));
+    } else if (response.statusCode == 202) {
+      return null;
     } else {
       // Si la llamada no fue exitosa, lanza un error.
       throw Exception('Failed to load post');

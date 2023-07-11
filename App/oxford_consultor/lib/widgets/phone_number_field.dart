@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class PhoneNumberField extends StatefulWidget {
-  const PhoneNumberField({super.key, required this.controller});
+  const PhoneNumberField({super.key, required this.controller, this.onChanged});
   final TextEditingController controller;
+  final ValueChanged<String>? onChanged;
   @override
   State<PhoneNumberField> createState() => _PhoneNumberFieldState();
 }
@@ -62,23 +64,31 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
           Expanded(
             flex: 3,
             child: TextField(
-              onChanged: (value) {
-                _updateControllerText();
-              },
-              controller: phoneNumbercontroller,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Insert numbers here',
-              ),
-            ),
+                onChanged: (value) {
+                  setState(() {
+                    _updateControllerText();
+                    if (widget.onChanged != null) {
+                      widget.onChanged!(_updateControllerText());
+                    }
+                  });
+                },
+                controller: phoneNumbercontroller,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Insert numbers here',
+                ),
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(7),
+                ]),
           )
         ],
       ),
     );
   }
 
-  void _updateControllerText() {
+  String _updateControllerText() {
     String combinedText = '$dropdownValue-${phoneNumbercontroller.text}';
     widget.controller.text = combinedText;
+    return combinedText;
   }
 }

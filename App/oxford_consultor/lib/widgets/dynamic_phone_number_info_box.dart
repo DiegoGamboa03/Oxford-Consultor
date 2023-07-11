@@ -4,7 +4,7 @@ import 'package:oxford_consultor/models/phone_number.dart';
 class DynamicPhoneNumberInfoBox extends StatefulWidget {
   const DynamicPhoneNumberInfoBox({super.key, required this.phoneNumber});
 
-  final PhoneNumber phoneNumber;
+  final PhoneNumber? phoneNumber;
 
   @override
   State<DynamicPhoneNumberInfoBox> createState() =>
@@ -14,6 +14,13 @@ class DynamicPhoneNumberInfoBox extends StatefulWidget {
 class _DynamicPhoneNumberInfoBoxState extends State<DynamicPhoneNumberInfoBox> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Column(
+      children: [
+        if (widget.phoneNumber != null)
+          const Text('Este numero no ha sido registrado'),
+        if (widget.phoneNumber == null)
+          const Text('Este numero no ha sido registrado'),
+      ],
+    );
   }
 }
