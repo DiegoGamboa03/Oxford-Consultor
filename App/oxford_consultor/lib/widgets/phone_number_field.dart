@@ -49,6 +49,9 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   setState(() {
                     _updateControllerText();
                     dropdownValue = value!;
+                    if (widget.onChanged != null) {
+                      widget.onChanged!(_updateControllerText());
+                    }
                   });
                 },
                 items: list.map<DropdownMenuItem<String>>((String value) {
