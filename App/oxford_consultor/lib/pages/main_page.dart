@@ -45,7 +45,7 @@ class _MainPageState extends State<MainPage> {
               } else {
                 return DynamicPhoneNumberInfoBox(
                     phoneNumber: snapshot
-                        .data!); // Pass the future directly to the DynamicPhoneNumberInfoBox
+                        .data); // Pass the future directly to the DynamicPhoneNumberInfoBox
               }
             },
           ),

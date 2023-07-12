@@ -1,16 +1,16 @@
 class PhoneNumber {
-  String? phoneNumber;
+  String phoneNumber;
   String? observation;
-  String? lastUpdateDate;
-  String? state;
+  String lastUpdateDate;
+  String state;
   String? expirationDate;
 
   PhoneNumber(
       {required this.phoneNumber,
-      required this.observation,
+      this.observation,
       required this.lastUpdateDate,
       required this.state,
-      required this.expirationDate});
+      this.expirationDate});
 
   factory PhoneNumber.fromJson(Map<String, dynamic> json) {
     return PhoneNumber(

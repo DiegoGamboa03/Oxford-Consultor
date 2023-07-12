@@ -14,13 +14,25 @@ class DynamicPhoneNumberInfoBox extends StatefulWidget {
 class _DynamicPhoneNumberInfoBoxState extends State<DynamicPhoneNumberInfoBox> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (widget.phoneNumber != null)
-          const Text('Este numero no ha sido registrado'),
-        if (widget.phoneNumber == null)
-          const Text('Este numero no ha sido registrado'),
-      ],
+    String observationString =
+        (widget.phoneNumber?.observation ?? 'No existe una observacion');
+    String stateString =
+        (widget.phoneNumber?.state == 'A') ? 'Disponible' : 'No disponible';
+    String expirationDateString =
+        (widget.phoneNumber?.expirationDate ?? 'No tiene fecha de vencimiento');
+    return Container(
+      child: (widget.phoneNumber != null)
+          ? Column(children: [
+              Text(widget.phoneNumber!.phoneNumber),
+              Text('Estado: $stateString'),
+              Text('Observacion: $observationString'),
+              Text(widget.phoneNumber!.observation ?? 'Placeholder text'),
+              Text(
+                  'Fecha de ultima actualizacion: ${widget.phoneNumber!.lastUpdateDate}'),
+              Text('Fecha de vencimiento: $expirationDateString'),
+              if (widget.phoneNumber!.state == 'A') Text('Disponible'),
+            ])
+          : const Text('Este numero no ha sido registrado'),
     );
   }
 }
