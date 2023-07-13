@@ -15,6 +15,7 @@ class _DynamicPhoneNumberInfoBoxState extends State<DynamicPhoneNumberInfoBox> {
   late String observationString;
   late String stateString;
   late String expirationDateString;
+  late String dropdownValue;
   List<String> optionslist = <String>[
     'Llamada efectuada',
     'No interesado',
@@ -22,8 +23,6 @@ class _DynamicPhoneNumberInfoBoxState extends State<DynamicPhoneNumberInfoBox> {
     'No llamar mas',
     'No posee tiempo'
   ];
-
-  String dropdownValue = 'Llamada efectuada';
 
   @override
   void initState() {
@@ -33,6 +32,7 @@ class _DynamicPhoneNumberInfoBoxState extends State<DynamicPhoneNumberInfoBox> {
         (widget.phoneNumber?.state == 'A') ? 'Disponible' : 'No disponible';
     expirationDateString =
         (widget.phoneNumber?.expirationDate ?? 'No tiene fecha de vencimiento');
+    dropdownValue = 'Llamada efectuada';
     super.initState();
   }
 
@@ -81,7 +81,19 @@ class _DynamicPhoneNumberInfoBoxState extends State<DynamicPhoneNumberInfoBox> {
                     ])
                   : Container(),
             ])
-          : const Text('Este numero no ha sido registrado'),
+          : Column(
+              children: [
+                const Text('Este numero no ha sido registrado'),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(Colors.blue),
+                  ),
+                  onPressed: () {},
+                  child: const Text('Registrar'),
+                ),
+              ],
+            ),
     );
   }
 }

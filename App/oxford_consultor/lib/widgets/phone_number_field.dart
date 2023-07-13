@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PhoneNumberField extends StatefulWidget {
   const PhoneNumberField({super.key, required this.controller, this.onChanged});
@@ -26,11 +27,11 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
     double height = MediaQuery.of(context).size.height;
 
     return Container(
-      width: width * 0.95,
+      width: width * 0.90,
       height: height * 0.07,
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.white),
+        color: const Color(0xffDEDEDF),
+        border: Border.all(color: const Color(0xffDEDEDF)),
         borderRadius: const BorderRadius.all(Radius.circular(40)),
       ),
       child: Row(
@@ -43,7 +44,8 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   border: InputBorder.none,
                 ),
                 value: dropdownValue,
-                style: const TextStyle(color: Colors.deepPurple),
+                iconEnabledColor: const Color(0xff4043CF),
+                style: GoogleFonts.roboto(color: const Color(0xff4043CF)),
                 onChanged: (String? value) {
                   // This is called when the user selects an item.
                   setState(() {
@@ -57,13 +59,21 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                 items: list.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Text(value),
+                    child: Text(
+                      value,
+                      style: GoogleFonts.roboto(color: const Color(0xff4043CF)),
+                    ),
                   );
                 }).toList(),
               ),
             ),
           ),
-          const VerticalDivider(),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: VerticalDivider(
+              color: Color(0xff4043CF),
+            ),
+          ),
           Expanded(
             flex: 3,
             child: TextField(
@@ -75,11 +85,13 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                     }
                   });
                 },
+                style: GoogleFonts.roboto(color: const Color(0xff4043CF)),
                 controller: phoneNumbercontroller,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Insert numbers here',
-                ),
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Ingrese el numero de telefono',
+                    hintStyle:
+                        GoogleFonts.roboto(color: const Color(0xff797585))),
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(7),
                 ]),
