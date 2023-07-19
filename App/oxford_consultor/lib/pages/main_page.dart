@@ -70,9 +70,14 @@ class _MainPageState extends State<MainPage> {
                       return Text(
                           'Error: ${snapshot.error}'); // Display an error message if an error occurs
                     } else {
-                      return DynamicPhoneNumberInfoBox(
-                          phoneNumber: snapshot
-                              .data); // Pass the future directly to the DynamicPhoneNumberInfoBox
+                      if (snapshot.data != null) {
+                        return DynamicPhoneNumberInfoBox(
+                            phoneNumber: snapshot.data);
+                      } else {
+                        return DynamicPhoneNumberInfoBox(
+                            phoneNumber: snapshot.data,
+                            phoneNumberString: phoneNumberString);
+                      } // Pass the future directly to the DynamicPhoneNumberInfoBox
                     }
                   },
                 ),

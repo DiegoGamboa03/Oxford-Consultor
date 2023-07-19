@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:oxford_consultor/models/phone_number.dart';
+import 'package:oxford_consultor/services/api_services.dart';
 
 class DynamicPhoneNumberInfoBox extends StatefulWidget {
-  const DynamicPhoneNumberInfoBox({super.key, required this.phoneNumber});
+  const DynamicPhoneNumberInfoBox(
+      {super.key, required this.phoneNumber, this.phoneNumberString});
 
   final PhoneNumber? phoneNumber;
-
+  final String? phoneNumberString;
   @override
   State<DynamicPhoneNumberInfoBox> createState() =>
       _DynamicPhoneNumberInfoBoxState();
@@ -24,6 +26,8 @@ class _DynamicPhoneNumberInfoBoxState extends State<DynamicPhoneNumberInfoBox> {
     'No posee tiempo'
   ];
 
+  Future<PhoneNumber?>? phoneNumberFuture; // Define the Future variable
+
   @override
   void initState() {
     observationString =
@@ -41,6 +45,7 @@ class _DynamicPhoneNumberInfoBoxState extends State<DynamicPhoneNumberInfoBox> {
     return Container(
       child: (widget.phoneNumber != null)
           ? Column(children: [
+              //Numero existe
               Text(widget.phoneNumber!.phoneNumber),
               Text('Estado: $stateString'),
               Text('Observacion: $observationString'),
@@ -82,6 +87,7 @@ class _DynamicPhoneNumberInfoBoxState extends State<DynamicPhoneNumberInfoBox> {
                   : Container(),
             ])
           : Column(
+              //Numero no existe
               children: [
                 const Text('Este numero no ha sido registrado'),
                 ElevatedButton(
@@ -89,7 +95,29 @@ class _DynamicPhoneNumberInfoBoxState extends State<DynamicPhoneNumberInfoBox> {
                     foregroundColor:
                         MaterialStateProperty.all<Color>(Colors.blue),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    ApiService()
+                        .createPhoneNumber(widget.phoneNumberString!)
+                        .then((flag) {
+                      if (flag) {
+                      } else {
+                        showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('AlertDialog Title'),
+                                  content:
+                                      const Text('AlertDialog description'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'OK'),
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                ));
+                      }
+                    });
+                  },
                   child: const Text('Registrar'),
                 ),
               ],
