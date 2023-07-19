@@ -1,31 +1,21 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:oxford_consultor/models/phone_number.dart';
 import '../constants.dart';
 
 class ApiService {
-  final _phoneNumberController = StreamController<PhoneNumber?>();
-
-  Stream<PhoneNumber?> get phoneNumberStream => _phoneNumberController.stream;
-
-  void dispose() {
-    _phoneNumberController.close();
-  }
-
-  void getPhoneNumber(String phoneNumber) async {
+  Future<PhoneNumber?> getPhoneNumber(String phoneNumber) async {
     var url = Uri.parse('${ApiConstants.baseUrl}/$phoneNumber');
     var response = await http.get(url);
 
     if (response.statusCode == 200) {
       // Si la llamada al servidor fue exitosa, analiza el JSON
-      _phoneNumberController.sink
-          .add(PhoneNumber.fromJson(json.decode(response.body)));
+      return PhoneNumber.fromJson(json.decode(response.body));
     } else if (response.statusCode == 202) {
-      _phoneNumberController.sink.add(null);
+      return null;
     } else {
       // Si la llamada no fue exitosa, lanza un error.
-      _phoneNumberController.addError(Exception('Failed to load post'));
+      throw Exception('Failed to load post');
     }
   }
 
